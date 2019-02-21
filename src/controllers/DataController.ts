@@ -2,6 +2,8 @@
 
 import { Router, Request, Response, NextFunction } from "express";
 
+import GuideConfig from "../models/GuideConfig";
+
 
 
 class DataController {
@@ -26,13 +28,35 @@ class DataController {
 
 
     public data(req: Request, res: Response, next: NextFunction) {
-        res.send( "Enjoy yo data bro" );
+
+        GuideConfig.findOne()
+            .then( config => res.status( 200 ).json( config ) )
+            .catch( next );
     }
 
 
 
     public populate(req: Request, res: Response, next: NextFunction) {
-        res.send( "Populating... No I'm not... Stop telling me what to do _)_" );
+
+        const guideConfig = new GuideConfig({
+            name: "Awesome Guide",
+            user: "Mr Jones",
+            text: "Lorem ipsum",
+            image: "https://googleimages.com/some-image.png",
+            positionX: 200,
+            positionY: 250,
+            borderRadius: 3,
+            backgroundColor: "#565669",
+            color: "#533556",
+            margin: 15,
+            link: "https://www.google.com",
+            width: "250px",
+            height: "550px"
+        });
+
+        guideConfig.save()
+            .then( () => res.status( 200 ).json( guideConfig ) )
+            .catch( next );
     }
 
 

@@ -5,10 +5,11 @@ import PageController from "./controllers/PageController";
 require( "dotenv" ).config();
 
 import * as compression from "compression";
+import * as hbs from "express-handlebars";
 import * as bodyParser from "body-parser";
+import * as mongoose from "mongoose";
 import * as express from "express";
 import * as cors from "cors";
-import * as hbs from "express-handlebars";
 
 
 
@@ -41,6 +42,8 @@ class Server {
 
         const MONGO_URI = "mongodb://mongo:27017/boardme";
 
+        mongoose.set( "useCreateIndex", true );
+        mongoose.connect( MONGO_URI || process.env.MONGODB_URI, { useNewUrlParser: true } );
 
         this.app.engine( "hbs", hbs( { extname: "hbs", defaultLayout: "layout", layoutsDir: __dirname + "/../views/layouts" } ) );
         this.app.set( "view engine", "hbs" );
