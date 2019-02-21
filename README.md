@@ -1,2 +1,9 @@
-# scrumbs-website
-Scrumbs website - NodeJS/Express
+# Boardme server proof of concept
+- Docker
+- NGINX
+- Typescript
+- NodeJS
+- Express
+- Mongoose
+- MongoDB
+
