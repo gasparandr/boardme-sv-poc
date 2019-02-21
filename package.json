@@ -6,6 +6,7 @@
   "license": "ISC",
   "scripts": {
     "start": "tsc && gulp && node ./build/Index.js",
+    "docker": "docker-compose up --build",
     "ts": "tsc -w",
     "server": "nodemon ./build/Index.js"
   },

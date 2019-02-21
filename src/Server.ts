@@ -1,4 +1,5 @@
 
+import DataController from "./controllers/DataController";
 import PageController from "./controllers/PageController";
 
 require( "dotenv" ).config();
@@ -38,7 +39,7 @@ class Server {
 
     public config() {
 
-        const MONGO_URI = "mongodb://mongo:27017/scrumbs-website";
+        const MONGO_URI = "mongodb://mongo:27017/boardme";
 
 
         this.app.engine( "hbs", hbs( { extname: "hbs", defaultLayout: "layout", layoutsDir: __dirname + "/../views/layouts" } ) );
@@ -60,6 +61,7 @@ class Server {
     public routes() {
 
         this.app.use( '/', PageController );
+        this.app.use( '/data', DataController );
 
     }
 
