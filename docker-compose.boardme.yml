@@ -1,0 +1,91 @@
+
+
+version: "3.1"
+
+services:
+
+  nginx-read-balancer:
+    image: gasparandr/boardme-nginx-read
+    depends_on:
+      - readnode1
+      - readnode2
+      - readnode3
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - boardme
+
+  readnode1:
+    image: gasparandr/node-read
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  readnode2:
+    image: gasparandr/node-read
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  readnode3:
+    image: gasparandr/node-read
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  nginx-write-balancer:
+    image: gasparandr/boardme-nginx-write
+    depends_on:
+      - writenode1
+      - writenode2
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - boardme
+
+  writenode1:
+    image: gasparandr/node-write
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  writenode2:
+    image: gasparandr/node-write
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  redis:
+    image: redis
+    expose:
+      - "6379"
+    networks:
+      - boardme
+
+  mongo:
+    image: mongo
+    expose:
+      - "27017"
+    networks:
+      - boardme
+
+
+networks:
+  boardme:
