@@ -1,0 +1,69 @@
+
+
+version: "3.1"
+
+services:
+
+  nginx-read-balancer:
+    build:
+      context: ./nginx-read
+      dockerfile: Dockerfile
+    depends_on:
+      - readnode1
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - boardme
+
+  readnode1:
+    build:
+      context: ./node-read-sv
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  nginx-write-balancer:
+    build:
+      context: ./nginx-write
+      dockerfile: Dockerfile
+    depends_on:
+      - writenode1
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - boardme
+
+  writenode1:
+    build:
+      context: ./node-write-sv
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  redis:
+    image: redis
+    expose:
+      - "6379"
+    networks:
+      - boardme
+
+  mongo:
+    image: mongo
+    expose:
+      - "27017"
+    networks:
+      - boardme
+
+
+networks:
+  boardme:
