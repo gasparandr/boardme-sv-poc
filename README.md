@@ -1,5 +1,5 @@
 # Boardme server proof of concept
-- Docker
+- Docker/Swarm
 - NGINX
 - Typescript
 - NodeJS
