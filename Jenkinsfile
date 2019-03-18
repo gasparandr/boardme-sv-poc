@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        PASS = credentials('dockerhub-pass')
+        PASS = credentials('boardme_dockerhub_pw')
     }
 
     stages {
