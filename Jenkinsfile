@@ -42,7 +42,7 @@ pipeline {
 
 def method_remote_deploy() {
 	withCredentials([
-		usernamePassword(credentialsId: boardme_api_cluster_user, usernameVariable: 'USER', passwordVariable: 'PASSWORD')
+		usernamePassword(credentialsId: 'boardme_api_cluster_user', usernameVariable: 'USER', passwordVariable: 'PASSWORD')
 	]) {
 	
 		def remote = [:]
