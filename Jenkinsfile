@@ -42,18 +42,21 @@ pipeline {
 
 def method_remote_deploy() {
 	withCredentials([
-		usernamePassword(credentialsId: 'boardme_api_cluster_user', usernameVariable: 'USER', passwordVariable: 'PASSWORD')
+		sshUserPrivateKey(credentialsId: 'boardme_api_cluster_auth', usernameVariable: 'USER', keyFileVariable: 'KEYFILE')
 	]) {
 	
 		def remote = [:]
 		remote.user = "${USER}"
-		remote.password = "${PASSWORD}"
 		remote.host = "${HOST_ADDRESS}"
 		remote.name = "${HOST_NAME}"
 		remote.allowAnyHosts = true
-
+		remote.identityFile = "${KEYFILE}"
+		
+		
 		stage('Remote SSH Test') {
-			sshCommand remote: remote, command: "echo \"Remote test success.. \" > /root/message"
+		    sshCommand remote: remote, command: "docker login -u boardme -p \"${PASS}\""
+		    sshPut remote: remote, from: 'docker-cloud.yml', into: '.'
+		    sshScript remote: remote, script: "jenkins/deploy/deploy.sh"
 		}
 	}
 }

@@ -1,0 +1,59 @@
+version: "3.1"
+
+services:
+
+  nginx-read-balancer:
+    image: boardme/nginx-read
+    depends_on:
+      - readnode1
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - boardme
+
+  readnode1:
+    image: boardme/node-read
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  nginx-write-balancer:
+    image: boardme/nginx-write
+    depends_on:
+      - writenode1
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - boardme
+
+  writenode1:
+    image: boardme/node-write
+    depends_on:
+      - mongo
+      - redis
+    restart: always
+    networks:
+      - boardme
+
+  redis:
+    image: redis
+    expose:
+      - "6379"
+    networks:
+      - boardme
+
+  mongo:
+    image: mongo
+    expose:
+      - "27017"
+    networks:
+      - boardme
+
+networks:
+  boardme:
+
